@@ -75,7 +75,7 @@ ul.checkpoint-results {
 .collapsed {
   display: block;
   /* same width as sidebar */
-  margin-left: -25%;
+  margin-left: -50%;
 }
 
 /* Search stations (TypeaheadJS is over Google Maps) */
@@ -97,6 +97,18 @@ ul.checkpoint-results {
   .navbar-header {
     float: none;
   };
+
+  .collapsed {
+    display: block;
+    /* same width as sidebar */
+    margin-left: -25%;
+  }
+
+  /* Fix for TypeaheadJS result list */
+  /* http://stackoverflow.com/questions/17957513/extending-the-width-of-bootstrap-typeahead-to-match-input-field */
+  .twitter-typeahead, .tt-hint, .tt-input, .tt-menu {
+    width: 100%;
+  }
 }
 
 /* TypeaheadJS styles for Twitter Bootstrap 3
@@ -109,7 +121,6 @@ span.twitter-typeahead .tt-dropdown-menu {
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
@@ -207,10 +218,4 @@ span.twitter-typeahead {
 .input-group.input-group-lg span.twitter-typeahead .tt-menu,
 .input-group.input-group-lg span.twitter-typeahead .tt-dropdown-menu {
   top: 46px !important;
-}
-
-/* Fix for TypeaheadJS result list */
-/* http://stackoverflow.com/questions/17957513/extending-the-width-of-bootstrap-typeahead-to-match-input-field */
-.twitter-typeahead, .tt-hint, .tt-input, .tt-menu {
-  width: 100%;
 }

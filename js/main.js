@@ -507,7 +507,7 @@ var App = function() {
 
       $("#content").toggleClass("col-md-12 col-md-9");
       $("#content").toggleClass("col-sm-12 col-sm-9");
-      $("#content").toggleClass("col-xs-12 col-xs-9");
+      $("#content").toggleClass("col-xs-12 col-xs-6");
 
       google.maps.event.trigger(self.transportMap.map, 'resize');
 
