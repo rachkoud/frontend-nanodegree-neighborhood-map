@@ -35,7 +35,7 @@
 
   <div class="container-fluid wrapper">
     <div id="row-main" class="row">
-      <div id="sidebar" class="hidden-xs col-sm-3 col-md-3 collapse in">
+      <div id="sidebar" class="col-xs-3 col-sm-3 col-md-3 collapse in">
         <div>
           <input id="filter" type="text" data-bind="value: filterStationText, valueUpdate: 'afterkeydown'" placeholder="Filter stations" />
         </div>
@@ -44,7 +44,7 @@
         </ul>
       </div>
 
-      <div class="col-md-9" id="content">
+      <div class="col-xs-9 col-sm-9 col-md-9" id="content">
         <div id="map"></div>
         <div id="search-stations">
           <input type="text" class="form-control text-center" placeholder="Search a Swiss station" data-bind="typeaheadJS: typeaheadOptions, selectedStation: selectedStation">

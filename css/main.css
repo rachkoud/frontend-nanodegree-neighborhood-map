@@ -73,8 +73,9 @@ ul.checkpoint-results {
 
 /* Collapse menu */
 .collapsed {
-  /* hide it for small displays*/
-  display: none;
+  display: block;
+  /* same width as sidebar */
+  margin-left: -25%;
 }
 
 /* Search stations (TypeaheadJS is over Google Maps) */
@@ -88,14 +89,6 @@ ul.checkpoint-results {
 }
 
 /* Responsive */
-@media (min-width: 992px) {
-  .collapsed {
-    display: block;
-    /* same width as sidebar */
-    margin-left: -25%;
-  };
-}
-
 @media (min-width: 768px) {
   .navbar-toggle {
     display: block;
