@@ -1,5 +1,5 @@
 {
-    "opts": {
-        "destination":"./docs"
-    }
+  "opts": {
+    "destination": "./docs"
+  }
 }

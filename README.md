@@ -5,7 +5,7 @@ This application relies on [http://knockoutjs.com/](http://knockoutjs.com/) and 
 
 You can try to search a Swiss Stations, for example, Bern, Lausanne, Moudon, .. the application will try to search the next connections leaving from this specific location. It even works with some location outside of the Switzerland, like Paris, ..
 
-[Try](http://rachkoud.github.io/frontend-nanodegree-neighborhood-map/index.html)
+[Try it!](http://rachkoud.github.io/frontend-nanodegree-neighborhood-map/build/index.html)
 
 ##### Kown issues
 
@@ -25,3 +25,31 @@ You can try to search a Swiss Stations, for example, Bern, Lausanne, Moudon, .. 
 ##Documentation
 
 - [Code documentation](http://rachkoud.github.io/frontend-nanodegree-neighborhood-map/docs/)
+
+##Installation
+This will build and run the server on http://localhost:1111/ from the build directory
+
+    npm install
+    gulp
+
+##Development
+
+    gulp --dev
+
+This will run the webserver from app directory with livereload
+
+##JavaScript documentation
+
+    gulp doc
+
+Generate documentation
+
+##Analyze code
+Check Javascript with JSHint, HTML5 and CSS validation against the [W3C validator](https://validator.w3.org/)
+
+    gulp analysze
+
+##Webpack
+
+    node_modules/.bin/webpack --config ./webpack.config.js
+
