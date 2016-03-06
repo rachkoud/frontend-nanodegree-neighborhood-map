@@ -135,11 +135,9 @@ ul.checkpoint-results {
 
 .search-stations {
   position: absolute;
-  top: 20px;
+  top: 40px;
   z-index: 1000;
   width: 100%;
-  padding-right: 30%;
-  padding-left: 30%;
 }
 
 

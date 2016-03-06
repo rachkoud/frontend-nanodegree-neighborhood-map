@@ -17,7 +17,8 @@ var gulp = require('gulp'),
   w3cCss = require('w3c-css'),
   gutil = require('gulp-util'),
   argv = require('yargs').argv,
-  gulpif = require('gulp-if');
+  gulpif = require('gulp-if'),
+  csslint = require('gulp-csslint');
 
 // app contains the sources and build has the optimizations
 var bases = {
@@ -147,40 +148,31 @@ gulp.task('w3c-html', function() {
     .pipe(w3cjs.reporter());
 });
 
-// Validate CSS against W3C with w3c-css module
-gulp.task('w3c-css', function(cb) {
-  async.eachSeries(paths.styles, function(href, next) {
-    w3cCss.validate(bases.app + href, function(err, data) {
-      // { process err, data.errors & data.warnings }
-
-      // sleep for 1.5 seconds between the requests
-      // See more about ban http://stackoverflow.com/questions/29484947/node-js-css-validation-w3c-banned-me/29633064#29633064
-      setTimeout(function() { next(err); }, 1500);
-    });
-  }, function(err) {
-    if (err) {
-      cb(err);
-      console.log('Failed to process an url', err);
-    } else {
-      cb();
-      console.log('All urls have been processed successfully');
-    }
-  });
-});
-
 // Validate CSS agains W3C with gulp w3c-css module
 gulp.task('gulp-w3c-css', function() {
-  return gulp.src(paths.styles, gulpOptions)
+  return gulp.src('css/main.css', gulpOptions)
     .pipe(gulpW3cCss())
     .pipe(gutil.buffer(function(err, files) {
       console.log(err);
+      files.forEach(function(file, index, array) {
+        var result = JSON.parse(file.contents.toString());
+
+        console.log(result);
+      });
       // err - an error encountered
       // files - array of validation results
       // files[i].contents is empty if there are no errors or warnings found
     }));
 });
 
+// CSS Lint
+gulp.task('css-lint', function() {
+  gulp.src('css/main.css', gulpOptions)
+    .pipe(csslint())
+    .pipe(csslint.reporter());
+});
+
 // Analyze HTML against W3C, JSHint scripts
-gulp.task('analyze', ['w3c-css', 'w3c-html', 'lint'], function() {});
+gulp.task('analyze', ['gulp-w3c-css', 'w3c-html', 'lint'], function() {});
 
 gulp.task('default', ['build', 'watch', 'webserver']);

@@ -23,6 +23,7 @@
     "async": "^1.5.2",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
+    "gulp-csslint": "^0.2.2",
     "gulp-if": "^2.0.0",
     "gulp-jsdoc3": "^0.2.0",
     "gulp-jshint": "^2.0.0",
