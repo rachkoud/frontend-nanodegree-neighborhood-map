@@ -30,7 +30,6 @@ var webpackConfig = {
       $: 'jquery',
       jQuery: 'jquery'
     }),
-    /*new webpack.optimize.UglifyJsPlugin(),*/
     new bowerWebpackPlugin({
       includes: /.*\.js/
     })
@@ -119,7 +118,8 @@ if (buildConfig.prod) {
 
       })
     },
-    new webpack.optimize.OccurenceOrderPlugin());
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin());
 } else {
   webpackConfig.output = {
     path: path.join(buildConfig.bases.build, 'js'),
