@@ -1,8 +1,9 @@
 'use strict';
 
-/*global define, $, _, google */
+/*global define, $, google */
 
-define('TransportMap', ['Journey', 'moment', 'Please'], function(Journey,
+define('TransportMap', ['lodash', 'Journey', 'moment', 'Please'], function(_,
+  Journey,
   moment, Please) {
   /**
    * TransportMap module.

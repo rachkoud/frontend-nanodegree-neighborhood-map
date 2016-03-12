@@ -2,7 +2,7 @@
 
 /*global define, require, $ */
 
-define('App', ['TransportViewModel', 'toastr', 'ko', 'moment', 'moment'],
+define('App', ['TransportViewModel', 'toastr', 'knockout'],
   function(TransportViewModel, toastr, ko) {
     /**
      * App module.

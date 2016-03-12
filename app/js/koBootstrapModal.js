@@ -2,7 +2,7 @@
 
 /*global define, $ */
 
-define(['ko', 'bootstrap'], function(ko) {
+define(['knockout', 'bootstrap'], function(ko) {
   /**
    * koTypeaheadJS module, used to create a [knockout binding]{@link http://knockoutjs.com/documentation/custom-bindings.html} for [TypeHeadJS]{@link https://twitter.github.io/typeahead.js/}
    * @module koTypeaheadJS

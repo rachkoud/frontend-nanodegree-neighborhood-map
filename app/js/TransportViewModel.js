@@ -2,9 +2,10 @@
 
 /*global define, $, google */
 
-define('TransportViewModel', ['moment', '_', 'ko', 'toastr', 'koDateTimePicker',
+define('TransportViewModel', ['lodash', 'moment', 'knockout', 'toastr',
+  'koDateTimePicker',
   'koTypeaheadJS', 'koBootstrapModal'
-], function(moment, _, ko, toastr) {
+], function(_, moment, ko, toastr) {
   /**
    * TransportViewModel module.
    * @module TransportViewModel

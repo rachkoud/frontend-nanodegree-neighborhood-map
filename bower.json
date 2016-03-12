@@ -1,0 +1,30 @@
+{
+  "name": "frontend-nanodegree-neighborhood-map",
+  "description": "Swiss Transport API POC",
+  "main": "build/index.html",
+  "authors": [
+    "rachkoud"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/rachkoud/frontend-nanodegree-neighborhood-map",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.1",
+    "toastr": "^2.1.2",
+    "knockout": "^3.4.0",
+    "pleasejs": "^0.4.2",
+    "bootstrap": "^3.3.6",
+    "typeahead.js": "^0.11.1",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.37",
+    "lodash": "^4.6.1",
+    "map-icons": "^3.0.0"
+  }
+}

@@ -2,7 +2,7 @@
 
 var gulp = require('gulp'),
   jsdoc = require('gulp-jsdoc3'),
-  webpackStream = require('webpack-stream'),
+  webpack = require('webpack'),
   webpack = require('webpack'),
   webserver = require('gulp-webserver'),
   minifyCSS = require('gulp-minify-css'),
@@ -16,96 +16,83 @@ var gulp = require('gulp'),
   async = require('async'),
   w3cCss = require('w3c-css'),
   gutil = require('gulp-util'),
-  argv = require('yargs').argv,
   gulpif = require('gulp-if'),
-  csslint = require('gulp-csslint');
-
-// app contains the sources and build has the optimizations
-var bases = {
-  app: 'app/',
-  build: 'build/',
-};
-
-// Paths to various files
-var paths = {
-  scripts: ['js/**/*.js'],
-  styles: ['css/**/*.css'],
-  images: ['image/**/*'],
-  content: ['index.html'],
-  copy: ['**/*.woff', '**/*.ttf', 'js/vendor/map-icons.js', '*.png']
-}
-
-var gulpOptions = { cwd: bases.app };
-
-var dev = argv.dev || false;
-console.log('Dev : ' + dev);
+  csslint = require('gulp-csslint'),
+  merge = require('merge-stream'),
+  bowerWebpackPlugin = require('bower-webpack-plugin'),
+  manifestPlugin = require('webpack-manifest-plugin'),
+  chunkManifestPlugin = require('chunk-manifest-webpack-plugin'),
+  buildConfig = require('./buildConfig.js'),
+  path = require('path'),
+  concat = require('gulp-concat');
 
 // Delete the build directory
 gulp.task('clean', function() {
-  return gulp.src(bases.build).pipe(clean());
+  return gulp.src(buildConfig.bases.build).pipe(clean());
 });
 
 
 // Minify styles
 gulp.task('styles', ['clean'], function() {
-  return gulp.src(paths.styles, gulpOptions)
-    .pipe(gulpif(!dev, minifyCSS()))
-    .pipe(gulp.dest(bases.build + 'css'))
+  var appStyles = gulp.src(buildConfig.paths.appStyles)
+    .pipe(concat('app.css'))
+    .pipe(gulpif(buildConfig.prod, minifyCSS()))
+    .pipe(gulp.dest(path.join(buildConfig.bases.build, 'css')));
+
+  var vendorStyles = gulp.src(buildConfig.paths.vendorStyles)
+    .pipe(concat('vendor.css'))
+    .pipe(gulpif(buildConfig.prod, minifyCSS()))
+    .pipe(gulp.dest(path.join(buildConfig.bases.build, 'css')));
+
+  return merge(appStyles, vendorStyles);
 });
 
 // Minifies our HTML files and outputs them to build/*.html
-gulp.task('content', ['clean'], function() {
-  return gulp.src(paths.content, gulpOptions)
-    .pipe(gulpif(!dev, minifyhtml({
+gulp.task('content', ['clean', 'scripts'], function() {
+  return gulp.src(buildConfig.paths.content, buildConfig.gulpOptionsBuild)
+    .pipe(gulpif(buildConfig.prod, minifyhtml({
       empty: true,
       quotes: true
     })))
-    .pipe(gulp.dest(bases.build))
+    .pipe(gulp.dest(buildConfig.bases.build))
 });
 
 // Bundle and minify scrips
-gulp.task('scripts', ['clean'], function() {
-  if (dev) {
-    // Do not minify!
-    webpackConfig.plugins = [
-      new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery'
-      })
-    ];
-  }
-
-  // Todo : use the chunk technic and vendor separation : https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95#.dheux9gjd
-  return gulp.src(bases.app + 'js/main.js')
-    .pipe(webpackStream(webpackConfig))
-    .pipe(gulp.dest(bases.build + 'js'));
+gulp.task('scripts', ['clean'], function(callback) {
+  // run webpack
+  webpack(webpackConfig, function(err, stats) {
+    if (err) throw new gutil.PluginError('webpack', err);
+    gutil.log('[webpack]', stats.toString({
+      // output options
+    }));
+    callback();
+  });
 });
 
 // Launches a test webserver
 gulp.task('webserver', function() {
-  gulp.src(bases.build)
+  gulp.src(buildConfig.bases.build)
     .pipe(webserver({
-      livereload: dev,
+      livereload: !buildConfig.prod,
       port: 1111
     }));
 });
 
 // Copy all other files to dist directly
 gulp.task('copy', ['clean'], function() {
-  return Promise.all([
-    new Promise(function(resolve, reject) {
-      gulp.src(paths.copy, gulpOptions)
-        .pipe(gulp.dest(bases.build))
-        .on('error', reject)
-        .on('end', resolve)
-    }),
-    new Promise(function(resolve, reject) {
-      gulp.src('js/vendor/map-icons.js', gulpOptions)
-        .pipe(gulp.dest(bases.build + 'js/vendor'))
-        .on('error', reject)
-        .on('end', resolve)
-    })
-  ]);
+  var fonts = gulp.src(['bower_components/bootstrap/dist/fonts/*.*',
+      'bower_components/map-icons/dist/fonts/*.*'
+    ])
+    .pipe(gulp.dest(path.join(buildConfig.bases.build, 'fonts')));
+
+  var mapIcons = gulp.src(
+      'bower_components/map-icons/dist/js/map-icons.js')
+    .pipe(gulp.dest(path.join(buildConfig.bases.build, 'js', 'vendor')));
+
+  var icons = gulp.src(['*.png', 'favicon.ico'], buildConfig.gulpOptionsApp)
+    .pipe(gulp.dest(buildConfig.bases.build));
+
+  return merge(fonts, mapIcons, icons);
 });
 
 // Build
@@ -113,25 +100,27 @@ gulp.task('build', ['scripts', 'content', 'styles', 'copy'], function() {});
 
 // Watches for changes to our files and executes required scripts
 gulp.task('watch', function() {
-  gulp.watch(paths.scripts.concat(paths.content, paths.styles), gulpOptions, [
-    'build'
-  ]);
+  gulp.watch(buildConfig.paths.scripts.concat(buildConfig.paths.content,
+      buildConfig.paths.appStyles, buildConfig.paths.vendorStyles),
+    buildConfig.gulpOptionsApp, [
+      'build'
+    ]);
 });
 
 // Generate doc
 gulp.task('doc', function(cb) {
-  var config = require('./jsdoc.json');
+  var jsDocConfig = require('./jsdoc.json');
   gulp.src(['README.md', './js/App.js', './js/Journey.js',
       './js/TransportMap.js',
       './js/koDateTimePicker.js', './js/koTypeaheadJS.js',
       './js/main.js', './js/TransportViewModel.js'
-    ], { cwd: bases.app, read: false })
-    .pipe(jsdoc(config, cb));
+    ], { cwd: buildConfig.bases.app, read: false })
+    .pipe(jsdoc(jsDocConfig, cb));
 });
 
 // JS Hint
 gulp.task('lint', function() {
-  return gulp.src('js/*.js', gulpOptions)
+  return gulp.src('js/*.js', buildConfig.gulpOptionsApp)
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(jshint.reporter('fail'))
@@ -143,14 +132,14 @@ gulp.task('lint', function() {
 
 // Validate HTML against W3C
 gulp.task('w3c-html', function() {
-  return gulp.src(paths.content, gulpOptions)
+  return gulp.src(buildConfig.paths.content, buildConfig.gulpOptionsApp)
     .pipe(w3cjs())
     .pipe(w3cjs.reporter());
 });
 
 // Validate CSS agains W3C with gulp w3c-css module
 gulp.task('gulp-w3c-css', function() {
-  return gulp.src('css/main.css', gulpOptions)
+  return gulp.src(path.join(buildConfig.bases.app, 'css', 'app.css'))
     .pipe(gulpW3cCss())
     .pipe(gutil.buffer(function(err, files) {
       console.log(err);
@@ -167,7 +156,8 @@ gulp.task('gulp-w3c-css', function() {
 
 // CSS Lint
 gulp.task('css-lint', function() {
-  gulp.src('css/main.css', gulpOptions)
+  gulp.src(path.join(buildConfig.bases.app, 'css', 'main.css'), buildConfig
+      .gulpOptionsApp)
     .pipe(csslint())
     .pipe(csslint.reporter());
 });

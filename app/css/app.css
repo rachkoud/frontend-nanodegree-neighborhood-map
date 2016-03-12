@@ -24,7 +24,7 @@ body {
 
 .map-icon-label .map-icon {
   font-size: 12px;
-  color: #FFFFFF;
+  color: #fff;
   line-height: 24px;
   text-align: center;
   white-space: nowrap;
@@ -81,7 +81,7 @@ body {
   border-right: 3px;
   border-bottom: 3px;
   padding: 5px;
-  border-color: #FFF;
+  border-color: #fff;
   border-style: solid;
 }
 
@@ -93,10 +93,10 @@ body {
   margin: 5px;
   font-size: 12px;
   border-style: solid;
-  border-color: #FFF;
+  border-color: #fff;
   border-width: 2px;
   font-weight: bolder;
-  color: #FFF;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -114,7 +114,7 @@ ul.checkpoint-results {
   padding: 20px;
   border-left-width: 10px;
   border-style: solid;
-  color: #FFF;
+  color: #fff;
 }
 
 .checkpoint-selected {
@@ -182,8 +182,8 @@ span.twitter-typeahead .tt-dropdown-menu {
   list-style: none;
   font-size: 14px;
   text-align: left;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+  background-color: #fff;
+  border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -197,14 +197,14 @@ span.twitter-typeahead .tt-suggestion {
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #333333;
+  color: #333;
   white-space: nowrap;
 }
 
 span.twitter-typeahead .tt-suggestion.tt-cursor,
 span.twitter-typeahead .tt-suggestion:hover,
 span.twitter-typeahead .tt-suggestion:focus {
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
   outline: 0;
   background-color: #337ab7;

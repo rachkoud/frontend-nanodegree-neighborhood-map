@@ -1,8 +1,9 @@
 'use strict';
 
-/*global define, _ */
+/*global define */
 
-define(['moment', 'google', 'Marker', 'SQUARE_ROUNDED'], function(moment,
+define(['lodash', 'moment', 'google', 'Marker', 'SQUARE_ROUNDED'], function(
+  _, moment,
   google, Marker, SQUARE_ROUNDED) {
   /**
    * Journey module.

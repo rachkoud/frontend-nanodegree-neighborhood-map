@@ -30,13 +30,20 @@ You can try to search a Swiss Stations, for example, Bern, Lausanne, Moudon, .. 
 This will build and run the server on http://localhost:1111/ from the build directory
 
     npm install
+    bower install
     gulp
 
 ##Development
 
-    gulp --dev
+    gulp
 
-This will run the webserver from app directory with livereload
+This will run the webserver from the build directory with livereload
+
+##Production
+
+    gulp --prod
+
+This will minify everything (js, html and css) and add JS caching
 
 ##JavaScript documentation
 
@@ -47,7 +54,7 @@ Generate documentation
 ##Analyze code
 Check Javascript with JSHint, HTML5 and CSS validation against the [W3C validator](https://validator.w3.org/)
 
-    gulp analysze
+    gulp analyze
 
 ##Webpack
 
